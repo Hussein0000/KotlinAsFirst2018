@@ -3,6 +3,8 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
+import kotlin.math.abs
+import kotlin.math.sqrt
 
 /**
  * Пример
@@ -18,9 +20,9 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Четырехзначное число назовем счастливым, если сумма первых двух ее цифр равна сумме двух последних.
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
-fun isNumberHappy(number: Int) {
-    ((number / 1000 + number / 100 % 10) == (number % 10 + number / 10 % 10))
-}
+fun isNumberHappy(number: Int) =
+        ((number / 1000 + number / 100 % 10) == (number % 10 + number / 10 % 10))
+
 
 /**
  * Простая
@@ -29,9 +31,8 @@ fun isNumberHappy(number: Int) {
  * Определить, угрожают ли они друг другу. Вернуть true, если угрожают.
  * Считать, что ферзи не могут загораживать друг друга.
  */
-fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int) {
-    ((x1 == x2) || (y1 == y2) || (Math.abs(x1 - x2) == Math.abs(y1 - y2)))
-}
+fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
+        (x1 == x2 || y1 == y2 || abs(x2 - x1) == abs(y2 - y1))
 
 
 /**
@@ -61,7 +62,9 @@ fun daysInMonth(month: Int, year: Int): Int =
  * Вернуть true, если утверждение верно
  */
 fun circleInside(x1: Double, y1: Double, r1: Double,
-                 x2: Double, y2: Double, r2: Double): Boolean = TODO()
+                 x2: Double, y2: Double, r2: Double): Boolean =
+        sqrt(sqr(x2 - x1) + sqr(y2 - y1)) + r1 <= r2
+
 
 /**
  * Средняя
@@ -72,6 +75,10 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int) {
-    (a <= r && b <= s) || (b <= r && a <= s) || (a <= r && c <= s) || (a <= s && c <= r) || (b <= r && c <= s) || (c <= r && b <= s)
-}
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean =
+        (a <= r && b <= s) || (a <= s && b <= r) || (a <= r && c <= s) || (a <= s && c <= r) || (b <= r && c <= s) || (b <= s && c <= r)
+
+
+
+
+
