@@ -115,23 +115,15 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double {
-    var numabs = 0.0
-    for (i in 0 until v.size) {
-        numabs += v[i] * v[i]
-    }
-    return sqrt(numabs)
-}
+fun abs(v: List<Double>): Double = sqrt(v.map { it * it }.sum())
 
 /**
  * Простая
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double {
-    return if (list.isNotEmpty()) list.sum() / list.size
-    else 0.0
-}
+fun mean(list: List<Double>): Double = if (list.isNotEmpty()) list.sum() / list.size else 0.0
+
 
 /**
  * Средняя
@@ -226,8 +218,7 @@ fun factorize(n: Int): List<Int> {
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String = TODO()
-
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
 /**
  * Средняя
  *
@@ -255,18 +246,14 @@ fun convert(n: Int, base: Int): List<Int> {
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String {
-    var string = ""
-    var number = n
-    val alphabet = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
-            "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
-    if (number == 0) string += 0
-    while (number > 0) {
-        val i = number % base
-        string += if (i < 10) i.toString() else alphabet[i - 10]
-        number /= base
+    val sb = StringBuilder()
+    val list = convert(n, base)
+    for (i in list) {
+        sb.append(if (i < 10) i
+        else 'a' + (i - 10))
     }
-    return string.reversed()
-
+    return if (sb.isBlank()) "0"
+    else sb.toString()
 }
 
 /**

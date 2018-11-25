@@ -66,10 +66,10 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  */
 fun ageDescription(age: Int): String {
     return when {
-        age % 100 in 5..20 -> "$age ???"
-        age % 10 == 1 -> "$age ???"
-        age % 10 in 2..4 -> "$age ????"
-        else -> "$age ???"
+        age % 100 in 5..20 -> "$age лет"
+        age % 10 == 1 -> "$age год"
+        age % 10 in 2..4 -> "$age года"
+        else -> "$age лет"
     }
 }
 
@@ -105,10 +105,14 @@ fun timeForHalfWay(t1: Double, v1: Double,
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
-    return if ((kingX == rookX1 || kingX == rookX2) && (kingY == rookY1 || kingY == rookY2)) 3
-    else if ((kingX == rookX1 || kingY == rookY1) && (kingX != rookX2 && kingY != rookY2)) 1
-    else if ((kingX == rookX2 || kingY == rookY2) && (kingX != rookX1 && kingY != rookY1)) 2
-    else 0
+    val k1 = (kingX == rookX1) or (kingY == rookY1)
+    val k2 = (kingX == rookX2) or (kingY == rookY2)
+    return when {
+        k1 && k2 -> 3
+        !k1 && k2 -> 2
+        k1 && !k2 -> 1
+        else -> 0
+    }
 }
 
 
@@ -143,10 +147,15 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    return if (a + b < c || a + c < b || b + c < a) -1
-    else if (a * a == b * b + c * c || b * b == a * a + c * c || c * c == b * b + a * a) 1
-    else if (a * a > b * b + c * c || b * b > c * c + a * a || c * c > b * b + a * a) 2
-    else 0
+    val max = maxOf(a, b, c)
+    val min = minOf(a, b, c)
+    val mid = a + b + c - max - min
+    if (max > min + mid) return -1
+    return when {
+        max * max == min * min + mid * mid -> 1
+        max * max > min * min + mid * mid -> 2
+        else -> 0
+    }
 }
 
 /**
@@ -158,10 +167,12 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    return if (c in a..b && b <= d) b - c
-    else if (a in c..d && b >= d) d - a
-    else if (a >= c && b <= d) b - a
-    else if (a <= c && b >= d) d - c
-    else -1
+    val firstS = maxOf(c, a)
+    val lastS = minOf(b, d)
+    return when {
+        c == b || a == d -> 0
+        c > b || a > d -> -1
+        else -> lastS - firstS
+    }
 }
 
