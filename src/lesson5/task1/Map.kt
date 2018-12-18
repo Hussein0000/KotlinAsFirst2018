@@ -176,7 +176,13 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    val current = mutableListOf<Double>()
+    val min = current.min()
+    stuff.map { if (it.value.first == kind) current.add(it.value.second) }
+    stuff.filter { (it.value.first != kind || it.value.second != min) }.map { return it.key }
+    return null
+}
 
 /**
  * Сложная
@@ -276,7 +282,7 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun hasAnagrams(words: List<String>): Boolean = TODO()
+fun hasAnagrams(words: List<String>): Boolean = words.groupingBy { it.toList().sorted() }.eachCount().any { (it.value) > 1 }
 
 /**
  * Сложная

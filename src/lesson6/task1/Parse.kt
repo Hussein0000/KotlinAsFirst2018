@@ -137,7 +137,12 @@ fun flattenPhoneNumber(phone: String): String =
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    if (jumps.matches(Regex("""[0-9-% ]+"""))) {
+        return Regex("[0-9]+").findAll(jumps).map { it.value.toInt() }.max() ?: -1
+    }
+    return -1
+}
 
 /**
  * Сложная
@@ -149,8 +154,15 @@ fun bestLongJump(jumps: String): Int = TODO()
  * Прочитать строку и вернуть максимальную взятую высоту (230 в примере).
  * При нарушении формата входной строки вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
-
+fun bestHighJump(jumps: String): Int {
+    if (!Regex("""[\d%+\s\-]+""").matches(jumps)) return -1
+    val x = jumps.split(" ")
+    var res = -1
+    for (i in 1 until x.size step 2) {
+        if ((x[i].contains("+")) && (x[i - 1] > res.toString())) res = x[i - 1].toInt()
+    }
+    return res
+}
 /**
  * Сложная
  *
@@ -160,7 +172,16 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    if (!Regex("""(\d+)(\s[+-]\s\d+)*""").matches(expression)) throw IllegalArgumentException(expression)
+    val x = expression.split(" ")
+    var result = x.first().toInt()
+    for (i in 1 until x.size - 1 step 2) {
+        if (x[i] == "+") result += x[i + 1].toInt()
+        else result -= x[i + 1].toInt()
+    }
+    return result
+}
 
 /**
  * Сложная
@@ -193,7 +214,17 @@ fun firstDuplicateIndex(str: String): Int {
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше либо равны нуля.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    if (! Regex("""(\S.*\d;\s|\S.*\d\.\d;\s)+""").matches("$description; "))
+        return ""
+    val list = description.split(" ", "; ")
+    var result = "" to - 1.0
+    for (i in 0 until list.size step 2) {
+        if (list[i + 1].toDouble() < 0) return ""
+        if (list[i + 1].toDouble() > result.second) result = list[i] to list[i + 1].toDouble()
+    }
+    return result.first
+}
 
 /**
  * Сложная
